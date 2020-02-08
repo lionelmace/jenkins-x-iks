@@ -1,7 +1,7 @@
 
 ## Pre-Requisites
 
-* A IKS cluster v1.15.X. A cluster can be provisione [here](https://cloud.ibm.com/kubernetes/clusters)
+* A IKS cluster v1.15.X. A cluster can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
 * Jenkins-X v
 
 ## Jenkins-X Boot
