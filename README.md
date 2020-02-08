@@ -1,21 +1,21 @@
 
 ## Pre-Requisites
 
-    * A IKS cluster v1.15.X. A cluster can be provisione [here](https://cloud.ibm.com/kubernetes/clusters)
-    * Jenkins-X v
+* A IKS cluster v1.15.X. A cluster can be provisione [here](https://cloud.ibm.com/kubernetes/clusters)
+* Jenkins-X v
 
 ## Jenkins-X Boot
 
-1. Make sure you're connected to the connect cluster.
+1. Make sure you're connected to the cluster.
     ```sh
     ic ks cluster config --cluster <cluster-name>
     ```
 
-1. Run the Export KUBECONFIG command
+1. Run the export KUBECONFIG command
 
-1. Create a file `jx-requirements-iks.yml` to store the IKS requirements
+1. Copy the file `jx-requirements-iks.yml` to store the IKS requirements
     ```sh
-    touch jx-requirements-iks.yml
+    cp jx-requirements-iks-template.yml jx-requirements-iks.yml
     ```
 
 1. Run the command 

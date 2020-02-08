@@ -1,0 +1,20 @@
+cluster:
+  clusterName: jxcluster
+  devEnvApprovers:
+  - <username>
+  provider: kubernetes
+  environmentGitOwner: <username>
+  environmentGitPublic: true
+  registry: de.icr.io
+environments:
+- ingress:
+    domain: <iks-cluster-ingress-subdomain>
+  key: dev
+- ingress:
+    domain: <iks-cluster-ingress-subdomain>
+  key: staging
+- ingress:
+    domain: <iks-cluster-ingress-subdomain>
+  key: production
+ingress:
+  domain: <iks-cluster-ingress-subdomain>
