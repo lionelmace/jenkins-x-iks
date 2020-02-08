@@ -126,20 +126,20 @@
 ## Test the project
 
 1. Start a first project
-
     ```
     jx create quickstart
     ```
+    Select node-http
 
 1. Enter the project your created.
-
     ```
-    cd myfirstjxproject
+    jx get applications
     ```
+    Output:
 
-1. Start a first project
+    APPLICATION      STAGING PODS URL
+    myfirstjxproject 0.0.1   1/1  http://myfirstjxproject-jx-staging.jxcluster-483cccd2f0d38128dd40d2b711142ba9-0000.eu-de.containers.appdomain.cloud
 
-    ```
-    jx add app jx-app-ui
+1. Open the app running in IKS 
 
-    ```
+    ![](./images/jx-iks-app.png)
