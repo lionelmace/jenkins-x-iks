@@ -37,14 +37,14 @@
       registry: de.icr.io
     environments:
     - ingress:
-      domain: <iks-cluster-ingress-subdomain>
-    key: dev
+        domain: <iks-cluster-ingress-subdomain>
+      key: dev
     - ingress:
         domain: <iks-cluster-ingress-subdomain>
-    key: staging
+      key: staging
     - ingress:
         domain: <iks-cluster-ingress-subdomain>
-    key: production
+      key: production
     ingress:
       domain: <iks-cluster-ingress-subdomain>
     ```
