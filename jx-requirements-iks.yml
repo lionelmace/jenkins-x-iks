@@ -1,0 +1,21 @@
+cluster:
+  clusterName: jxcluster
+  devEnvApprovers:
+  - lionelmace
+  provider: kubernetes
+  environmentGitOwner: lionelmace
+  environmentGitPublic: true
+  # registry: docker.io
+  registry: de.icr.io
+environments:
+- ingress:
+    domain: jxcluster-483cccd2f0d38128dd40d2b711142ba9-0000.eu-de.containers.appdomain.cloud
+  key: dev
+- ingress:
+    domain: jxcluster-483cccd2f0d38128dd40d2b711142ba9-0000.eu-de.containers.appdomain.cloud
+  key: staging
+- ingress:
+    domain: jxcluster-483cccd2f0d38128dd40d2b711142ba9-0000.eu-de.containers.appdomain.cloud
+  key: production
+ingress:
+  domain: jxcluster-483cccd2f0d38128dd40d2b711142ba9-0000.eu-de.containers.appdomain.cloud
