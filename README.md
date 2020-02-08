@@ -24,17 +24,17 @@
     ```
     Copy the value of the field **Ingress Subdomain**
 
-1. Edit the file and replace the domain with the ingress subdomain.
+1. Edit the file and replace the values <> such as the cluster name, the github user name, the ingress subdomain.
 
     ```yml
     cluster:
-      clusterName: jxcluster
+      clusterName: <iks-cluster-name>
       devEnvApprovers:
-      - lionelmace
+      - <username>
       provider: kubernetes
-      environmentGitOwner: lionelmace
+      environmentGitOwner: <username>
       environmentGitPublic: true
-      registry: docker.io
+      registry: de.icr.io
     environments:
     - ingress:
       domain: <iks-cluster-ingress-subdomain>
