@@ -1,17 +1,20 @@
 
 ## Pre-Requisites
 
-* A IKS cluster v1.15.X. A cluster can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
+* a IKS cluster v1.15.X, can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
 * Jenkins-X v
 
 ## Jenkins-X Boot
 
 1. Make sure you're connected to the cluster.
     ```sh
-    ic ks cluster config --cluster <cluster-name>
+    ibmcloud ks cluster config --cluster <cluster-name>
     ```
 
-1. Run the export KUBECONFIG command
+1. Clone the repository 
+    ```
+    git clone https://github.com/lionelmace/jenkins-x-iks
+    ```
 
 1. Copy the file `jx-requirements-iks.yml` to store the IKS requirements
     ```sh
@@ -20,7 +23,7 @@
 
 1. Run the command 
     ```sh
-    ibmcloud ks cluster get <cluster-name>
+    ibmcloud ks cluster get --cluster <cluster-name>
     ```
     Copy the value of the field **Ingress Subdomain**
 
@@ -51,25 +54,13 @@
 
 1. Run the `jx boot` command with the requirements file which will overwrite the default requirements file
     ```sh
-    jx boot --requirements=./jx-requirements-iks.yml
+    jx boot --requirements=./jenkins-x-iks/jx-requirements-iks.yml
     ```
 
-1. Yes Jenkins-X works on IKS so just validate when being asked 
+1. Jenkins-X works on IKS so just validate when being asked 
     ```When being asked jx boot has only been validated on GKE and EKS, we'd love feedback and contributions for other Kubernetes providers```
 
-    ```
-    ? Jenkins X Admin Username admin
-    ? Jenkins X Admin Password [? for help] *****
-    ? Pipeline bot Git username lionelmace
-    ? Pipeline bot Git email address email@gmail.com
-    ? Pipeline bot Git token [? for help] ****************************************
-    Generated token XXXXXXXXXXXXXXX, to use it press enter.
-    This is the only time you will be shown it so remember to save it
-    ? HMAC token, used to validate incoming webhooks. Press enter to use the generated token [? for help]
-    Do you want to configure an external Docker Registry?By default Jenkins X will use the docker registry from the cloud provider. If you want to configure an external docker regi? Docker Registry Url https://index.docker.io/v1/
-    ? Docker Registry username lionelmace
-    ? Docker Registry password [? for help] ********
-    ? Docker Registry email email@gmail.com
+1. Answer some remaining questions, e.g., for your Git/GitHub user.
     ```
 
 1. Once the installation is complete, you should see a message similar to this:
