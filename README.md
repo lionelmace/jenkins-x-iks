@@ -7,31 +7,29 @@
 * tiller service account for Helm, [see here](https://github.com/helm/helm/issues/5100)
 * the **[jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)** installed on your machine
 
-## Jenkins-X Boot
+## Pre installation steps
 
-1. Make sure you're connected to the cluster.
+1. Connect to your IKS cluster (here: jx-15)
     ```sh
-    ibmcloud ks cluster config --cluster <cluster-name>
+    $ ic ks cluster config --cluster jx-15
     ```
 
-1. Clone the repository 
-    ```
-    git clone https://github.com/lionelmace/jenkins-x-iks
-    ```
-
-1. Copy the file `jx-requirements-iks.yml` to store the IKS requirements
+1. Verify that you're connected to your cluster
     ```sh
-    cp jx-requirements-iks-template.yml jx-requirements-iks.yml
+    $ kubectl config current-context
+    jx-15/bpt0sbsf0jcnu0julbdg
     ```
+    
+1. Retreive information about the Ingress Subdomain of your cluster (`iks-cluster-ingress-subdomain` below)
+      ```sh
+      $ ibmcloud ks cluster get --cluster jx-15 --json | grep ingressHostname | tr -d '":,' | awk '{print $2}'
+      jx-15-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
+      ```
+1. Have on hand your GitHub account, displayed in the "Your profile" page (`username` below)
 
-1. Run the command 
-    ```sh
-    ibmcloud ks cluster get --cluster <cluster-name>
-    ```
-    Copy the value of the field **Ingress Subdomain**
+1. Download locally the file [jx-requirements-iks-template.yml](https://github.com/lionelmace/jenkins-x-iks/blob/master/jx-requirements-iks-template.yml)
 
-1. Edit the file and replace the values <> such as the cluster name, the github user name, the ingress subdomain.
-
+1. Edit the file and replace the values <> such as the cluster name, the github user name, the ingress subdomain with your own value. Change also the registry if you need
     ```yml
     cluster:
       clusterName: <iks-cluster-name>
@@ -55,9 +53,11 @@
       domain: <iks-cluster-ingress-subdomain>
     ```
 
+## Jenkins-X Boot
+
 1. Run the `jx boot` command with the requirements file which will overwrite the default requirements file
     ```sh
-    jx boot --requirements=./jenkins-x-iks/jx-requirements-iks.yml
+    jx boot --requirements=./jx-requirements-iks-template.yml
     ```
 
 1. Jenkins-X works on IKS so just validate when being asked 
