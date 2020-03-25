@@ -3,7 +3,7 @@
 
 * a **IKS cluster** v1.15.X, can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
 * the **[IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)** installed on your machine
-* **[Helm CLI]**(https://github.com/helm/helm) installed on your machine and on the cluster
+* **[Helm CLI](https://github.com/helm/helm)** installed on your machine and on the cluster
 * tiller service account for Helm, [see here](https://github.com/helm/helm/issues/5100)
 * the **[jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)** installed on your machine
 
