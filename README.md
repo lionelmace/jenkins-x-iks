@@ -143,4 +143,4 @@ This page describes how to install Jenkins-X on an existing IKS cluster and depl
 
 1. Open the app running in IKS 
 
-    ![](./images/jx-iks-app.png)
+    ![](./images/jx-iks-app-2.png)
