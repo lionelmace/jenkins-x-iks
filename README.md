@@ -1,14 +1,31 @@
 # Installing Jenkins-X on IBM Cloud
 
-This page describes how to install Jenkins-X on an existing IKS cluster and deploy applications using the IBM Cloud registry.
+This tutorial describes how to install Jenkins-X on an existing IKS cluster and deploy applications using the IBM Cloud registry.
 
 ## Pre-Requisites
 
 * a **IKS cluster** v1.15.X, can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
 * the **[IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)** installed on your machine
+* the **[kubectl CLI](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl)** installed on your machine
 * **[Helm CLI](https://github.com/helm/helm)** installed on your machine and on the cluster
 * tiller service account for Helm, [see here](https://github.com/helm/helm/issues/5100)
 * the **[jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)** installed on your machine
+
+NB: This tutorial was run with the following versions:
+* jx                 2.0.1249
+* Kubernetes cluster v1.15.11+IKS
+* kubectl            v1.14.3
+* git                2.20.1 (Apple Git-117)
+* Operating System   Mac OS X 10.14.6 build 18G3020
+* IBM Cloud CLI version 0.22.1
+* IBM Cloud plugins:
+  * container-registry: 0.1.454
+  * container-service/kubernetes-service: 1.0.0
+* Helm version:
+  * Client: "v2.12.3"
+  * Server: "v2.12.3"
+
+Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 
 ## Pre-Installation steps
 
@@ -144,3 +161,5 @@ This page describes how to install Jenkins-X on an existing IKS cluster and depl
 1. Open the app running in IKS 
 
     ![](./images/jks-iks-app-2.png)
+
+## Miscellaneous
