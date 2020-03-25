@@ -1,5 +1,7 @@
 # Installing Jenkins-X on IBM Cloud
 
+This page describes how to install Jenkins-X on an existing IKS cluster and deploy applications using the IBM Cloud registry.
+
 ## Pre-Requisites
 
 * a **IKS cluster** v1.15.X, can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
@@ -8,7 +10,7 @@
 * tiller service account for Helm, [see here](https://github.com/helm/helm/issues/5100)
 * the **[jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)** installed on your machine
 
-## Pre installation steps
+## Pre-Installation steps
 
 1. Connect to your IKS cluster (here: jx-15)
     ```sh
@@ -54,7 +56,7 @@
       domain: <iks-cluster-ingress-subdomain>
     ```
 
-## Jenkins-X Boot
+## Installing Jenkins-X with `jx boot` command
 
 1. Run the `jx boot` command with the requirements file which will overwrite the default requirements file
     ```sh
@@ -66,6 +68,18 @@
 
 1. Answer some remaining questions, e.g., for your Git/GitHub user.
     ```
+    ? Jenkins X Admin Username *****
+    ? Jenkins X Admin Password [? for help] *****
+    ? Pipeline bot Git username *****
+    ? Pipeline bot Git email address *****
+    ? Pipeline bot Git token [? for help] ****************************************
+    Generated token XXXXXXXXXXXXXXX, to use it press enter.
+    This is the only time you will be shown it so remember to save it
+    ? HMAC token, used to validate incoming webhooks. Press enter to use the generated token [? for help]
+    Do you want to configure an external Docker Registry? No
+    ```
+    
+    be sure to answer `No`to the `Do you want to configure an external Docker Registry?` question
 
 1. Once the installation is complete, you should see a message similar to this:
 
