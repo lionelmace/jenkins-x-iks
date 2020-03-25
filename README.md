@@ -28,7 +28,7 @@ This page describes how to install Jenkins-X on an existing IKS cluster and depl
       $ ibmcloud ks cluster get --cluster jx-15 --json | grep ingressHostname | tr -d '":,' | awk '{print $2}'
       jx-15-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
       ```
-1. Have on hand your GitHub account, displayed in the "Your profile" page (`username` below)
+1. Have on hand your `GitHub account` (displayed in the "Your profile" page) or your GitHub Organisation name (`username` below)
 
 1. Download locally the file [jx-requirements-iks-template.yml](https://github.com/lionelmace/jenkins-x-iks/blob/master/jx-requirements-iks-template.yml)
 
@@ -88,49 +88,42 @@ This page describes how to install Jenkins-X on an existing IKS cluster and depl
     Using namespace 'jx' from context named 'jxcluster/boumltjf0rljb7kbmbu0' on server 'https://c2.eu-de.containers.cloud.ibm.com:25118'.
     ```
 
-## Activate the IBM Cloud Container Registry
+## Using the IBM Cloud Container Registry (after Jenkins-X has installed)
 
-1. Create a namespace in the IBM Cloud Container Registry Service that matches your GitHub organization name. If the names do not match, then Jenkins-X cannot use the Container Registry.
-    
+1. Create a namespace in the IBM Cloud Container Registry Service that matches your GitHub organization name or your GitHub username. If the names do not match, then Jenkins-X cannot use the Container Registry.
     ```
     ibmcloud cr namespace-add <your-github-org>
     ```
-
-1. While Jenkins-X is installing, create an API key to authorize Jenkins-X to push to the Container Registry. For production environments, create a Service ID API Key with Container Registry write permissions.
-
+    
+1. Create an API key which will be used to authorize Jenkins-X to push to the IBM Container Registry. (For production environments, create a Service ID API Key with Container Registry write permissions)
     ```
     ibmcloud iam api-key-create <key-name> -d "Jenkins X API Key" --file <filename>
     ```
 
-1. After Jenkins-X has installed, use jx create docker auth command to update the registry authorization.
-
+1. Go into the `jx` namespace created during the installation
     ```
-    jx create docker auth --host "de.icr.io" --user "iamapikey" --secret "<IAMAPIKEY>" --email "a@b.c"
+    jx ns jx
+    ```
+    
+1. Use `jx create docker auth command` to update the registry authorization with your own API key
+    ```
+    jx create docker auth --host "de.icr.io" --user "iamapikey" --secret "<YOURAPIKEY>" --email "a@b.c"
     ```
 
-1. Copy and rename the default secret to any environment namespaces that you are using. These steps update the secret for the jx-staging and jx-production namespaces.
-
-    OK
+1. Copy and rename the default secret to any environment namespaces that you are using with jx (here: dev, staging, production). These steps update the secret for the jx-dev, jx-staging and jx-production namespaces.
     ```sh
+    kubectl get secret default-de-icr-io -o yaml -n default | sed 's/default/jx-dev/g' | kubectl -n jx-dev create -f -
     kubectl get secret default-de-icr-io -o yaml -n default | sed 's/default/jx-staging/g' | kubectl -n jx-staging create -f -
-    ```
-    Output:
-    secret/jx-staging-de-icr-io created
-
-    NOK
-    ```sh
     kubectl get secret default-de-icr-io -o yaml -n default | sed 's/default/jx-production/g' | kubectl -n jx-production create -f -
     ```
-    Output:
-    Error from server (NotFound): error when creating "STDIN": namespaces "jx-production" not found
 
-1. Patch the ServiceAccounts to use the pull secret in the new namespaces
+1. Patch the ServiceAccounts to use the pull secrets in the new namespaces
 
     ```
+    kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "jx-dev-de-icr-io"}]}' -n jx-dev
     kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "jx-staging-de-icr-io"}]}' -n jx-staging
+    kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "jx-production-de-icr-io"}]}' -n jx-production
     ```
-    Output:
-    serviceaccount/default patched
 
 ## Test the project
 
@@ -145,9 +138,8 @@ This page describes how to install Jenkins-X on an existing IKS cluster and depl
     jx get applications
     ```
     Output:
-
-    APPLICATION      STAGING PODS URL
-    myfirstjxproject 0.0.1   1/1  http://myfirstjxproject-jx-staging.jxcluster-483cccd2f0d38128dd40d2b711142ba9-0000.eu-de.containers.appdomain.cloud
+    APPLICATION STAGING PODS URL
+    jx15-qs-1   0.0.5   1/1  http://jx15-qs-1-jx-staging.jx-15-44f776889ff639c7e053e4520bd46cec-0000.eu-de.containers.appdomain.cloud
 
 1. Open the app running in IKS 
 
