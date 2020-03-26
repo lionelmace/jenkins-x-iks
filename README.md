@@ -30,9 +30,9 @@ Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/
 
 ## Set up the Jenkins-X requirements with your cluster info
 
-1. Connect to your IKS cluster (here: jx-15)
+1. Connect to your IKS cluster
     ```sh
-    ibmcloud ks cluster config --cluster jx-15
+    ibmcloud ks cluster config --cluster <iks-cluster-name>
     ```
 
 1. Verify that you're connected to your cluster
@@ -46,9 +46,9 @@ Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/
     
 1. Retrieve and copy the Ingress Subdomain of your cluster
     ```sh
-    ibmcloud ks cluster get --cluster jx-15 --json | jq ".ingressHostname" | tr -d '":,'
+    ibmcloud ks cluster get --cluster <iks-cluster-name> --json | jq ".ingressHostname" | tr -d '":,'
     ```
-    Output
+    Output:
     ```
     jx-15-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
     ```
