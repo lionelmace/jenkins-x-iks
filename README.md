@@ -4,28 +4,22 @@ This tutorial describes how to install Jenkins-X on an existing IKS cluster and 
 
 ## Pre-Requisites
 
-This tutorial was tested with the following versions:
+This tutorial was tested with the following package versions:
 
-| Package Name     | Version           |
-| ------------- |:-------------|
-| jx                                    | v2.0.1249 |
-| IKS cluster                    | v1.15.11+IKS      |
-| kubectl                               | v1.14.3 & v1.16.3 |
-| git                                   | v2.20.1 (Apple Git-117) |
-| OS                                    | Mac OS X 10.14.6 build 18G3020   |
-| IBM Cloud CLI                         | v0.22.1   |
-| IBM Cloud plugins container-registry  | v0.1.454  |
-| IBM Cloud plugins kubernetes-service  | v1.0.15   |
-| Helm Client & Server                  | v2.12.3   |
+| Package Name  | Version     |
+| ------------- |:------------|
+| [jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)                          | v2.0.1249 |
+| [IKS cluster](https://cloud.ibm.com/kubernetes/clusters)                 | v1.15.11+IKS |
+| [kubectl CLI](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl)                     | v1.14.3 & v1.16.3 |
+| git                         | v2.20.1 (Apple Git-117) |
+| OS                          | Mac OS X 10.14.6 build 18G3020 |
+| [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)                         | v0.22.1 |
+| IBM Cloud plugins container-registry  | v0.1.454 |
+| IBM Cloud plugins kubernetes-service  | v1.0.15 |
+| [Helm CLI](https://github.com/helm/helm) Client & Server                  | v2.12.3 |
 
-Download the package from here:
-* **IKS cluster**, can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
-* **[IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)** installed on your machine
-* **[kubectl CLI](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl)** installed on your machine
-* **[Helm CLI](https://github.com/helm/helm)** installed on your machine and on the cluster
-* **[jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)** installed on your machine
-
-Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
+> List of supported package versions for jx:
+https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 
 
 ## Set up the Jenkins-X requirements with your cluster info
@@ -185,15 +179,17 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     ```
     jx create quickstart
     ```
-    Select node-http
+    Select **node-http**
 
 1. Enter the project your created.
     ```
     jx get applications
     ```
     Output:
+    ````
     APPLICATION STAGING PODS URL
     jx15-qs-1   0.0.5   1/1  http://jx15-qs-1-jx-staging.jx-15-44f776889ff639c7e053e4520bd46cec-0000.eu-de.containers.appdomain.cloud
+    ```
 
 1. Open the app running in IKS 
 
