@@ -38,14 +38,20 @@ Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/
 1. Verify that you're connected to your cluster
     ```sh
     kubectl config current-context
+    ```
+    Output:
+    ```
     jx-15/bpt0sbsf0jcnu0julbdg
     ```
     
 1. Retrieve and copy the Ingress Subdomain of your cluster
-      ```sh
-      ibmcloud ks cluster get --cluster jx-15 --json | jq ".ingressHostname" | tr -d '":,'
-      jx-15-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
-      ```
+    ```sh
+    ibmcloud ks cluster get --cluster jx-15 --json | jq ".ingressHostname" | tr -d '":,'
+    ```
+    Output
+    ```
+    jx-15-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
+    ```
 
 1. Have on hand your `GitHub account` (displayed in the "Your profile" page) or your GitHub Organisation name (`username` below)
 
