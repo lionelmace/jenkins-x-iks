@@ -79,6 +79,7 @@ Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/
       key: production
     ingress:
       domain: <iks-cluster-ingress-subdomain>
+    secretStorage: local
     ```
 
 ## Configure Helm for new cluster
