@@ -4,52 +4,54 @@ This tutorial describes how to install Jenkins-X on an existing IKS cluster and 
 
 ## Pre-Requisites
 
-* a **IKS cluster** v1.15.X, can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
-* the **[IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)** installed on your machine
-* the **[kubectl CLI](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl)** installed on your machine
-* **[Helm CLI](https://github.com/helm/helm)** installed on your machine and on the cluster
-* tiller service account for Helm, [see here](https://github.com/helm/helm/issues/5100)
-* the **[jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)** installed on your machine
+This tutorial was tested with the following versions:
 
-NB: This tutorial was run with the following versions:
-* jx                 2.0.1249
-* Kubernetes cluster v1.15.11+IKS
-* kubectl            v1.14.3
-* git                2.20.1 (Apple Git-117)
-* Operating System   Mac OS X 10.14.6 build 18G3020
-* IBM Cloud CLI version 0.22.1
-* IBM Cloud plugins:
-  * container-registry: 0.1.454
-  * container-service/kubernetes-service: 1.0.0
-* Helm version:
-  * Client: "v2.12.3"
-  * Server: "v2.12.3"
+| Package Name     | Version           |
+| ------------- |:-------------|
+| jx                                    | v2.0.1249 |
+| IKS cluster                    | v1.15.11+IKS      |
+| kubectl                               | v1.14.3 & v1.16.3 |
+| git                                   | v2.20.1 (Apple Git-117) |
+| OS                                    | Mac OS X 10.14.6 build 18G3020   |
+| IBM Cloud CLI                         | v0.22.1   |
+| IBM Cloud plugins container-registry  | v0.1.454  |
+| IBM Cloud plugins kubernetes-service  | v1.0.15   |
+| Helm Client & Server                  | v2.12.3   |
+
+Download the package from here:
+* **IKS cluster**, can be provisioned [here](https://cloud.ibm.com/kubernetes/clusters)
+* **[IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)** installed on your machine
+* **[kubectl CLI](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl)** installed on your machine
+* **[Helm CLI](https://github.com/helm/helm)** installed on your machine and on the cluster
+* **[jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)** installed on your machine
 
 Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 
-## Pre-Installation steps
+
+## Set up the Jenkins-X requirements with your cluster info
 
 1. Connect to your IKS cluster (here: jx-15)
     ```sh
-    $ ic ks cluster config --cluster jx-15
+    ibmcloud ks cluster config --cluster jx-15
     ```
 
 1. Verify that you're connected to your cluster
     ```sh
-    $ kubectl config current-context
+    kubectl config current-context
     jx-15/bpt0sbsf0jcnu0julbdg
     ```
     
-1. Retreive information about the Ingress Subdomain of your cluster (`iks-cluster-ingress-subdomain` below)
+1. Retrieve and copy the Ingress Subdomain of your cluster
       ```sh
-      $ ibmcloud ks cluster get --cluster jx-15 --json | grep ingressHostname | tr -d '":,' | awk '{print $2}'
+      ibmcloud ks cluster get --cluster jx-15 --json | jq ".ingressHostname" | tr -d '":,'
       jx-15-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
       ```
+
 1. Have on hand your `GitHub account` (displayed in the "Your profile" page) or your GitHub Organisation name (`username` below)
 
 1. Download locally the file [jx-requirements-iks-template.yml](https://github.com/lionelmace/jenkins-x-iks/blob/master/jx-requirements-iks-template.yml)
 
-1. Edit the file and replace the values <> such as the cluster name, the github user name, the ingress subdomain with your own value. Change also the registry if you need
+1. Edit the file and replace the values <...> such as the cluster name, the github user name, the ingress subdomain with your own value. Change also the registry if you need
     ```yml
     cluster:
       clusterName: <iks-cluster-name>
@@ -73,7 +75,27 @@ Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/
       domain: <iks-cluster-ingress-subdomain>
     ```
 
-## Installing Jenkins-X with `jx boot` command
+## Configure Helm for new cluster
+
+Helm Tiller with a service account must be configured for new cluster. See this [issue](https://github.com/helm/helm/issues/5100)
+
+1. Install tiller on the cluster
+    ```
+    helm init
+    ```
+
+1. Configure Service Account and Cluster Role Binding by running the following 3 commands:
+    ```
+    kubectl create serviceaccount -n kube-system tiller
+    ```
+    ```
+    kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+    ```
+    ```
+    kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}
+    ```
+
+## Installing Jenkins-X with `jx boot`
 
 1. Run the `jx boot` command with the requirements file which will overwrite the default requirements file
     ```sh
@@ -81,9 +103,10 @@ Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/
     ```
 
 1. Jenkins-X works on IKS so just validate when being asked 
-    ```When being asked jx boot has only been validated on GKE and EKS, we'd love feedback and contributions for other Kubernetes providers```
+    ```
+    When being asked jx boot has only been validated on GKE and EKS, we'd love feedback and contributions for other Kubernetes providers```
 
-1. Answer some remaining questions, e.g., for your Git/GitHub user.
+1. Answer some remaining questions, e.g. Git/GitHub user.
     ```
     ? Jenkins X Admin Username *****
     ? Jenkins X Admin Password [? for help] *****
@@ -96,7 +119,7 @@ Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/
     Do you want to configure an external Docker Registry? No
     ```
     
-    be sure to answer `No`to the `Do you want to configure an external Docker Registry?` question
+    > Make sure to answer **No** to the question **Do you want to configure an external Docker Registry?**
 
 1. Once the installation is complete, you should see a message similar to this:
 
@@ -161,5 +184,3 @@ Supported versions for jx: https://github.com/jenkins-x/jenkins-x-versions/tree/
 1. Open the app running in IKS 
 
     ![](./images/jks-iks-app-2.png)
-
-## Miscellaneous

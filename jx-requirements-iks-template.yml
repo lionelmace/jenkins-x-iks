@@ -18,3 +18,4 @@ environments:
   key: production
 ingress:
   domain: <iks-cluster-ingress-subdomain>
+secretStorage: local
