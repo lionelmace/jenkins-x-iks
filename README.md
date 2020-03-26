@@ -150,6 +150,13 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     jx create docker auth --host "de.icr.io" --user "iamapikey" --secret "<YOURAPIKEY>" --email "a@b.c"
     ```
 
+1. Create the following 3 kubernetes namespaces
+    ```
+    kubectl create namespace jx-dev
+    kubectl create namespace jx-staging
+    kubectl create namespace jx-production
+    ```
+
 1. Copy and rename the default secret to any environment namespaces that you are using with jx (here: dev, staging, production). These steps update the secret for the jx-dev, jx-staging and jx-production namespaces.
     ```sh
     kubectl get secret default-de-icr-io -o yaml -n default | sed 's/default/jx-dev/g' | kubectl -n jx-dev create -f -
