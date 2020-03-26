@@ -181,6 +181,11 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     ```
     Select **node-http**
 
+1. Check the activity
+    ```
+    jx get activity -f <jx-project-name> -w
+    ```
+
 1. Enter the project your created.
     ```
     jx get applications
