@@ -49,31 +49,46 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 
 1. Have on hand your `GitHub account` (displayed in the "Your profile" page) or your GitHub Organisation name (`username` below)
 
-1. Download locally the file [jx-requirements-iks-template.yml](https://github.com/lionelmace/jenkins-x-iks/blob/master/jx-requirements-iks-template.yml)
+1. Download locally the file [jx-requirements-iks.yml](https://github.com/lionelmace/jenkins-x-iks/blob/jmo/jx-requirements-iks.yml)
 
 1. Edit the file and replace the values <...> such as the cluster name, the github user name, the ingress subdomain with your own value. Change also the registry if you need
     ```yml
-    cluster:
-      clusterName: <iks-cluster-name>
-      devEnvApprovers:
-      - <username>
-      provider: kubernetes
-      environmentGitOwner: <username>
-      environmentGitPublic: true
-      registry: de.icr.io
-    environments:
-    - ingress:
-        domain: <iks-cluster-ingress-subdomain>
-      key: dev
-    - ingress:
-        domain: <iks-cluster-ingress-subdomain>
-      key: staging
-    - ingress:
-        domain: <iks-cluster-ingress-subdomain>
-      key: production
-    ingress:
-      domain: <iks-cluster-ingress-subdomain>
-    secretStorage: local
+cluster:
+  clusterName: "<iks-cluster-name>"
+  environmentGitOwner: "<username>"
+  environmentGitPublic: false
+  project: ""
+  provider: iks
+  zone: ""
+  registry: de.icr.io
+gitops: true
+environments:
+- key: dev
+- key: staging
+- key: production
+ingress:
+  domain: "<iks-cluster-ingress-subdomain>"
+  externalDNS: false
+  tls:
+    email: ""
+    enabled: false
+    production: false
+kaniko: true
+secretStorage: local
+storage:
+  logs:
+    enabled: false
+    url: ""
+  reports:
+    enabled: false
+    url: ""
+  repository:
+    enabled: false
+    url: ""
+versionStream:
+  ref: "master"
+  url: https://github.com/jenkins-x/jenkins-x-versions.git
+webhook: prow
     ```
 
 ## Configure Helm for new cluster
@@ -100,7 +115,7 @@ Helm Tiller with a service account must be configured for new cluster. See this 
 
 1. Run the `jx boot` command with the requirements file which will overwrite the default requirements file
     ```sh
-    jx boot --requirements=./jx-requirements-iks-template.yml
+    jx boot --requirements=./jx-requirements-iks.yml
     ```
 
 1. Jenkins-X works on IKS so just validate when being asked 
