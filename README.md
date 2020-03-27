@@ -132,7 +132,7 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     ```sh
     jx boot
     ```
-    
+
 1. Jenkins-X works on IKS so just validate when being asked 
     ```
     When being asked jx boot has only been validated on GKE and EKS, we'd love feedback and contributions for other Kubernetes providers```
@@ -229,3 +229,11 @@ Helm Tiller with a service account must be configured for new cluster. See this 
 1. Open the app running in IKS 
 
     ![](./images/jks-iks-app-2.png)
+
+## Long-term storage for logs + reports
+
+tbd
+
+## Backing up the state of your Jenkins-x cluster
+
+tbd
