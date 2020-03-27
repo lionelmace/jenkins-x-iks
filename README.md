@@ -35,7 +35,7 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
     ```
     Output:
     ```
-    jx-15/bpt0sbsf0jcnu0julbdg
+    my-iks-cluster/bptxxxxxxxnu0julbdg
     ```
     
 1. Retrieve and copy the Ingress Subdomain of your cluster
@@ -44,52 +44,10 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
     ```
     Output:
     ```
-    jx-15-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
+    my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
     ```
 
 1. Have on hand your `GitHub account` (displayed in the "Your profile" page) or your GitHub Organisation name (`username` below)
-
-1. Download locally the file [jx-requirements-iks.yml](https://github.com/lionelmace/jenkins-x-iks/blob/jmo/jx-requirements-iks.yml)
-
-1. Edit the file and replace the values <...> such as the cluster name, the github user name, the ingress subdomain with your own value. Change also the registry if you need
-    ```yaml
-    cluster:
-    clusterName: "<iks-cluster-name>"
-    environmentGitOwner: "<username>"
-    environmentGitPublic: false
-    project: ""
-    provider: iks
-    zone: ""
-    registry: de.icr.io
-    gitops: true
-    environments:
-    - key: dev
-    - key: staging
-    - key: production
-    ingress:
-    domain: "<iks-cluster-ingress-subdomain>"
-    externalDNS: false
-    tls:
-        email: ""
-        enabled: false
-        production: false
-    kaniko: true
-    secretStorage: local
-    storage:
-    logs:
-        enabled: false
-        url: ""
-    reports:
-        enabled: false
-        url: ""
-    repository:
-        enabled: false
-        url: ""
-    versionStream:
-    ref: "master"
-    url: https://github.com/jenkins-x/jenkins-x-versions.git
-    webhook: prow
-    ```
 
 ## Configure Helm for new cluster
 
@@ -113,11 +71,68 @@ Helm Tiller with a service account must be configured for new cluster. See this 
 
 ## Installing Jenkins-X with `jx boot`
 
-1. Run the `jx boot` command with the requirements file which will overwrite the default requirements file
+1. Clone the jenkins-x-boot-config on your local disk
     ```sh
-    jx boot --requirements=./jx-requirements-iks.yml
+    git clone https://github.com/jenkins-x/jenkins-x-boot-config.git
     ```
 
+1. `cd` into the cloned directory
+    ```sh
+    cd jenkins-x-boot-config
+    ```
+
+1. Modify the `jx-requirements.yml` as follow:
+   1. Put your cluster name in the field `clusterName`
+   1. Put your GitHub account in the field `environmentGitOwner`
+   1. Put your Ingress Subdomain in the field `domain`
+   1. Put `iks` in the field `provider`
+   1. Add a line to specify the name of your IBM registry: `registry: de.icr.io`
+
+1. Ater the modifications, the `jx-requirements.yml` should be like this:
+    ```yaml
+    cluster:
+    clusterName: "my-iks-cluster"
+    environmentGitOwner: "my-github-account"
+    environmentGitPublic: false
+    project: ""
+    provider: iks
+    zone: ""
+    registry: de.icr.io
+    gitops: true
+    environments:
+    - key: dev
+    - key: staging
+    - key: production
+    ingress:
+    domain: "my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud"
+    externalDNS: false
+    tls:
+        email: ""
+        enabled: false
+        production: false
+    kaniko: true
+    secretStorage: local
+    storage:
+    logs:
+        enabled: false
+        url: ""
+    reports:
+        enabled: false
+        url: ""
+    repository:
+        enabled: false
+        url: ""
+    versionStream:
+    ref: "master"
+    url: https://github.com/jenkins-x/jenkins-x-versions.git
+    webhook: prow
+    ```
+
+1. Run the `jx boot` command
+    ```sh
+    jx boot
+    ```
+    
 1. Jenkins-X works on IKS so just validate when being asked 
     ```
     When being asked jx boot has only been validated on GKE and EKS, we'd love feedback and contributions for other Kubernetes providers```
