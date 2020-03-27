@@ -52,43 +52,43 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 1. Download locally the file [jx-requirements-iks.yml](https://github.com/lionelmace/jenkins-x-iks/blob/jmo/jx-requirements-iks.yml)
 
 1. Edit the file and replace the values <...> such as the cluster name, the github user name, the ingress subdomain with your own value. Change also the registry if you need
-    ```yml
-cluster:
-  clusterName: "<iks-cluster-name>"
-  environmentGitOwner: "<username>"
-  environmentGitPublic: false
-  project: ""
-  provider: iks
-  zone: ""
-  registry: de.icr.io
-gitops: true
-environments:
-- key: dev
-- key: staging
-- key: production
-ingress:
-  domain: "<iks-cluster-ingress-subdomain>"
-  externalDNS: false
-  tls:
-    email: ""
-    enabled: false
-    production: false
-kaniko: true
-secretStorage: local
-storage:
-  logs:
-    enabled: false
-    url: ""
-  reports:
-    enabled: false
-    url: ""
-  repository:
-    enabled: false
-    url: ""
-versionStream:
-  ref: "master"
-  url: https://github.com/jenkins-x/jenkins-x-versions.git
-webhook: prow
+    ```yaml
+    cluster:
+    clusterName: "<iks-cluster-name>"
+    environmentGitOwner: "<username>"
+    environmentGitPublic: false
+    project: ""
+    provider: iks
+    zone: ""
+    registry: de.icr.io
+    gitops: true
+    environments:
+    - key: dev
+    - key: staging
+    - key: production
+    ingress:
+    domain: "<iks-cluster-ingress-subdomain>"
+    externalDNS: false
+    tls:
+        email: ""
+        enabled: false
+        production: false
+    kaniko: true
+    secretStorage: local
+    storage:
+    logs:
+        enabled: false
+        url: ""
+    reports:
+        enabled: false
+        url: ""
+    repository:
+        enabled: false
+        url: ""
+    versionStream:
+    ref: "master"
+    url: https://github.com/jenkins-x/jenkins-x-versions.git
+    webhook: prow
     ```
 
 ## Configure Helm for new cluster
