@@ -91,8 +91,8 @@ Helm Tiller with a service account must be configured for new cluster. See this 
 1. Ater the modifications, the `jx-requirements.yml` should be like this:
     ```yaml
     cluster:
-    clusterName: "my-iks-cluster"
-    environmentGitOwner: "my-github-account"
+    clusterName: my-iks-cluster
+    environmentGitOwner: my-github-account
     environmentGitPublic: false
     project: ""
     provider: iks
@@ -104,7 +104,7 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     - key: staging
     - key: production
     ingress:
-    domain: "my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud"
+    domain: my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
     externalDNS: false
     tls:
         email: ""
