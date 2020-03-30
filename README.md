@@ -87,17 +87,19 @@ Helm Tiller with a service account must be configured for new cluster. See this 
    1. Put your Ingress Subdomain in the field `domain`
    1. Put `iks` in the field `provider`
    1. Add a line to specify the name of your IBM registry: `registry: de.icr.io`
+   1. Add a line to specify the name of your IBM region: `region: eu-de`
 
 1. Ater the modifications, the `jx-requirements.yml` should be like this:
     ```yaml
     cluster:
-    clusterName: my-iks-cluster
-    environmentGitOwner: my-github-account
-    environmentGitPublic: false
-    project: ""
-    provider: iks
-    zone: ""
-    registry: de.icr.io
+        clusterName: my-iks-cluster
+        environmentGitOwner: my-github-account
+        environmentGitPublic: false
+        project: ""
+        provider: iks
+        zone: ""
+        registry: de.icr.io
+        region: eu-de
     gitops: true
     environments:
     - key: dev
@@ -106,13 +108,18 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     ingress:
     domain: my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
     externalDNS: false
+    namespaceSubDomain: -jx.
     tls:
         email: ""
         enabled: false
         production: false
     kaniko: true
+    repository: nexus
     secretStorage: local
     storage:
+    backup:
+        enabled: false
+        url: ""
     logs:
         enabled: false
         url: ""
@@ -122,8 +129,12 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     repository:
         enabled: false
         url: ""
+    vault: {}
+    velero:
+    schedule: ""
+    ttl: ""
     versionStream:
-    ref: "master"
+    ref: v1.0.406
     url: https://github.com/jenkins-x/jenkins-x-versions.git
     webhook: prow
     ```
