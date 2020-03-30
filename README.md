@@ -22,7 +22,7 @@ This tutorial was tested with the following package versions:
 https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 
 
-## Set up the Jenkins-X requirements with your cluster info
+## Retreive the information needed
 
 1. Connect to your IKS cluster
     ```sh
@@ -69,7 +69,7 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}
     ```
 
-## Installing Jenkins-X with `jx boot`
+## Set up the Jenkins-X requirements
 
 1. Clone the jenkins-x-boot-config on your local disk
     ```sh
@@ -139,6 +139,8 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     webhook: prow
     ```
 
+## Installing Jenkins-X with `jx boot`
+
 1. Run the `jx boot` command
     ```sh
     jx boot
@@ -170,7 +172,7 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     Using namespace 'jx' from context named 'jxcluster/boumltjf0rljb7kbmbu0' on server 'https://c2.eu-de.containers.cloud.ibm.com:25118'.
     ```
 
-## Using the IBM Cloud Container Registry (after Jenkins-X has installed)
+## Set up the IBM Cloud Container Registry authorization (after Jenkins-X has installed)
 
 1. Go into the `jx` namespace created during the installation
     ```
@@ -186,7 +188,7 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     ```
     ibmcloud iam api-key-create <key-name> -d "Jenkins X API Key" --file <filename>
     ```
-        
+
 1. Use `jx create docker auth command` to update the registry authorization with your own API key
     ```
     jx create docker auth --host "de.icr.io" --user "iamapikey" --secret "<YOURAPIKEY>" --email "a@b.c"
