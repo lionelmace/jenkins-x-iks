@@ -172,7 +172,12 @@ Helm Tiller with a service account must be configured for new cluster. See this 
 
 ## Using the IBM Cloud Container Registry (after Jenkins-X has installed)
 
-1. Create a namespace in the IBM Cloud Container Registry Service that matches your GitHub organization name or your GitHub username. If the names do not match, then Jenkins-X cannot use the Container Registry.
+1. Go into the `jx` namespace created during the installation
+    ```
+    jx ns jx
+    ```
+
+1. Create a namespace in the IBM Cloud Container Registry Service that matches your GitHub organization name or your GitHub username. If the names do not match, then the Jenkins-X quickstart project cannot use the Container Registry. For your own project, you will of course define the registry namespace that you want
     ```
     ibmcloud cr namespace-add <your-github-org>
     ```
@@ -181,12 +186,7 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     ```
     ibmcloud iam api-key-create <key-name> -d "Jenkins X API Key" --file <filename>
     ```
-
-1. Go into the `jx` namespace created during the installation
-    ```
-    jx ns jx
-    ```
-    
+        
 1. Use `jx create docker auth command` to update the registry authorization with your own API key
     ```
     jx create docker auth --host "de.icr.io" --user "iamapikey" --secret "<YOURAPIKEY>" --email "a@b.c"
