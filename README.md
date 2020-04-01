@@ -8,21 +8,20 @@ This tutorial was tested with the following package versions:
 
 | Package Name  | Version     |
 | ------------- |:------------|
-| [jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)                          | v2.0.1249 |
+| [jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)                          | v2.0.1258 |
 | [IKS cluster](https://cloud.ibm.com/kubernetes/clusters)                 | v1.15.11+IKS |
 | [kubectl CLI](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl)                     | v1.14.3 & v1.16.3 |
 | git                         | v2.20.1 (Apple Git-117) |
 | OS                          | Mac OS X 10.14.6 build 18G3020 |
-| [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)                         | v0.22.1 |
+| [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)                         | v1.0.0 |
 | IBM Cloud plugins container-registry  | v0.1.454 |
 | IBM Cloud plugins kubernetes-service  | v1.0.15 |
-| [Helm CLI](https://github.com/helm/helm) Client & Server                  | v2.12.3 |
 
 > List of supported package versions for jx:
 https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 
 
-## Set up the Jenkins-X requirements with your cluster info
+## Retreive the information needed
 
 1. Connect to your IKS cluster
     ```sh
@@ -35,7 +34,7 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
     ```
     Output:
     ```
-    jx-15/bpt0sbsf0jcnu0julbdg
+    my-iks-cluster/bptxxxxxxxnu0julbdg
     ```
     
 1. Retrieve and copy the Ingress Subdomain of your cluster
@@ -44,63 +43,86 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
     ```
     Output:
     ```
-    jx-15-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
+    my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
     ```
 
 1. Have on hand your `GitHub account` (displayed in the "Your profile" page) or your GitHub Organisation name (`username` below)
 
-1. Download locally the file [jx-requirements-iks-template.yml](https://github.com/lionelmace/jenkins-x-iks/blob/master/jx-requirements-iks-template.yml)
+## Set up the Jenkins-X requirements
 
-1. Edit the file and replace the values <...> such as the cluster name, the github user name, the ingress subdomain with your own value. Change also the registry if you need
-    ```yml
+1. Clone the jenkins-x-boot-config on your local disk
+    ```sh
+    git clone https://github.com/jenkins-x/jenkins-x-boot-config.git
+    ```
+
+1. `cd` into the cloned directory
+    ```sh
+    cd jenkins-x-boot-config
+    ```
+
+1. Modify the `jx-requirements.yml` as follow:
+   1. Put your cluster name in the field `clusterName`
+   1. Put your GitHub account in the field `environmentGitOwner`
+   1. Put your Ingress Subdomain in the field `domain`
+   1. Put `iks` in the field `provider`
+   1. Add a line to specify the name of your IBM registry: `registry: de.icr.io`
+   1. Add a line to specify the name of your IBM region: `region: eu-de`
+
+1. Ater the modifications, the `jx-requirements.yml` should be like this:
+    ```yaml
     cluster:
-      clusterName: <iks-cluster-name>
-      devEnvApprovers:
-      - <username>
-      provider: kubernetes
-      environmentGitOwner: <username>
-      environmentGitPublic: true
-      registry: de.icr.io
+        clusterName: my-iks-cluster
+        environmentGitOwner: my-github-account
+        environmentGitPublic: false
+        project: ""
+        provider: iks
+        zone: ""
+        registry: de.icr.io
+        region: eu-de
+    gitops: true
     environments:
-    - ingress:
-        domain: <iks-cluster-ingress-subdomain>
-      key: dev
-    - ingress:
-        domain: <iks-cluster-ingress-subdomain>
-      key: staging
-    - ingress:
-        domain: <iks-cluster-ingress-subdomain>
-      key: production
+    - key: dev
+    - key: staging
+    - key: production
     ingress:
-      domain: <iks-cluster-ingress-subdomain>
+    domain: my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
+    externalDNS: false
+    namespaceSubDomain: -jx.
+    tls:
+        email: ""
+        enabled: false
+        production: false
+    kaniko: true
+    repository: nexus
     secretStorage: local
-    ```
-
-## Configure Helm for new cluster
-
-Helm Tiller with a service account must be configured for new cluster. See this [issue](https://github.com/helm/helm/issues/5100)
-
-1. Install tiller on the cluster
-    ```
-    helm init
-    ```
-
-1. Configure Service Account and Cluster Role Binding by running the following 3 commands:
-    ```
-    kubectl create serviceaccount -n kube-system tiller
-    ```
-    ```
-    kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-    ```
-    ```
-    kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}
+    storage:
+    backup:
+        enabled: false
+        url: ""
+    logs:
+        enabled: false
+        url: ""
+    reports:
+        enabled: false
+        url: ""
+    repository:
+        enabled: false
+        url: ""
+    vault: {}
+    velero:
+    schedule: ""
+    ttl: ""
+    versionStream:
+    ref: v1.0.406
+    url: https://github.com/jenkins-x/jenkins-x-versions.git
+    webhook: prow
     ```
 
 ## Installing Jenkins-X with `jx boot`
 
-1. Run the `jx boot` command with the requirements file which will overwrite the default requirements file
+1. Run the `jx boot` command
     ```sh
-    jx boot --requirements=./jx-requirements-iks-template.yml
+    jx boot
     ```
 
 1. Jenkins-X works on IKS so just validate when being asked 
@@ -129,9 +151,14 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     Using namespace 'jx' from context named 'jxcluster/boumltjf0rljb7kbmbu0' on server 'https://c2.eu-de.containers.cloud.ibm.com:25118'.
     ```
 
-## Using the IBM Cloud Container Registry (after Jenkins-X has installed)
+## Set up the IBM Cloud Container Registry authorization (after Jenkins-X has installed)
 
-1. Create a namespace in the IBM Cloud Container Registry Service that matches your GitHub organization name or your GitHub username. If the names do not match, then Jenkins-X cannot use the Container Registry.
+1. Go into the `jx` namespace created during the installation
+    ```
+    jx ns jx
+    ```
+
+1. Create a namespace in the IBM Cloud Container Registry Service that matches your GitHub organization name or your GitHub username. If the names do not match, then the Jenkins-X quickstart project cannot use the Container Registry. For your own project, you will of course define the registry namespace that you want
     ```
     ibmcloud cr namespace-add <your-github-org>
     ```
@@ -141,11 +168,6 @@ Helm Tiller with a service account must be configured for new cluster. See this 
     ibmcloud iam api-key-create <key-name> -d "Jenkins X API Key" --file <filename>
     ```
 
-1. Go into the `jx` namespace created during the installation
-    ```
-    jx ns jx
-    ```
-    
 1. Use `jx create docker auth command` to update the registry authorization with your own API key
     ```
     jx create docker auth --host "de.icr.io" --user "iamapikey" --secret "<YOURAPIKEY>" --email "a@b.c"
@@ -199,3 +221,23 @@ Helm Tiller with a service account must be configured for new cluster. See this 
 1. Open the app running in IKS 
 
     ![](./images/jks-iks-app-2.png)
+
+1. Display the images used in the IBM Cloud registry
+    ```
+    ibmcloud cr images --restrict <your-github-org>
+    ```
+    Output:
+    ````
+    Liste des images...
+
+    Référentiel                        Etiquette   Condensé       Espace de nom   Créé             Taille   Statut de sécurité
+    de.icr.io/<your-github-org>/jx15-qs-1         0.0.1       2d2f5214025b   <your-github-org>         29 minutes ago   67 MB    41 problèmes
+    ```
+
+## Long-term storage for logs + reports
+
+tbd
+
+## Backing up the state of your Jenkins-x cluster
+
+tbd
