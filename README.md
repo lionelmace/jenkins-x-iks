@@ -49,26 +49,6 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 
 1. Have on hand your `GitHub account` (displayed in the "Your profile" page) or your GitHub Organisation name (`username` below)
 
-## Configure Helm for new cluster
-
-Helm Tiller with a service account must be configured for new cluster. See this [issue](https://github.com/helm/helm/issues/5100)
-
-1. Install tiller on the cluster
-    ```
-    helm init
-    ```
-
-1. Configure Service Account and Cluster Role Binding by running the following 3 commands:
-    ```
-    kubectl create serviceaccount -n kube-system tiller
-    ```
-    ```
-    kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-    ```
-    ```
-    kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}
-    ```
-
 ## Set up the Jenkins-X requirements
 
 1. Clone the jenkins-x-boot-config on your local disk
@@ -242,6 +222,18 @@ Helm Tiller with a service account must be configured for new cluster. See this 
 1. Open the app running in IKS 
 
     ![](./images/jks-iks-app-2.png)
+
+1. Display the images used in the IBM Cloud registry
+    ```
+    ibmcloud cr images --restrict <your-github-org>
+    ```
+    Output:
+    ````
+    Liste des images...
+
+    Référentiel                        Etiquette   Condensé       Espace de nom   Créé             Taille   Statut de sécurité
+    de.icr.io/<your-github-org>/jx15-qs-1         0.0.1       2d2f5214025b   <your-github-org>         29 minutes ago   67 MB    41 problèmes
+    ```
 
 ## Long-term storage for logs + reports
 
