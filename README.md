@@ -1,4 +1,4 @@
-# Installing Jenkins-X on IBM Cloud - v2
+# Installing Jenkins-X on IBM Cloud
 
 This tutorial describes how to install Jenkins-X on an existing IKS cluster and deploy applications using the IBM Cloud registry.
 
@@ -8,15 +8,14 @@ This tutorial was tested with the following package versions:
 
 | Package Name  | Version     |
 | ------------- |:------------|
-| [jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)                          | v2.0.1249 |
+| [jx CLI](https://jenkins-x.io/docs/getting-started/setup/install/)                          | v2.0.1258 |
 | [IKS cluster](https://cloud.ibm.com/kubernetes/clusters)                 | v1.15.11+IKS |
 | [kubectl CLI](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl)                     | v1.14.3 & v1.16.3 |
 | git                         | v2.20.1 (Apple Git-117) |
 | OS                          | Mac OS X 10.14.6 build 18G3020 |
-| [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)                         | v0.22.1 |
+| [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)                         | v1.0.0 |
 | IBM Cloud plugins container-registry  | v0.1.454 |
 | IBM Cloud plugins kubernetes-service  | v1.0.15 |
-| [Helm CLI](https://github.com/helm/helm) Client & Server                  | v2.12.3 |
 
 > List of supported package versions for jx:
 https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
