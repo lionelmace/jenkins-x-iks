@@ -33,7 +33,7 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
     ```sh
     kubectl config current-context
     ```
-    Output:
+    Output shows cluster-name/cluster-id as follows:
     ```
     my-iks-cluster/bptxxxxxxxnu0julbdg
     ```
@@ -61,35 +61,35 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
     cd jenkins-x-boot-config
     ```
 
-1. Modify the `jx-requirements.yml` as follow:
-   1. Put your cluster name in the field `clusterName`
-   1. Put your GitHub account in the field `environmentGitOwner`
-   1. Put your Ingress Subdomain in the field `domain`
-   1. Put `iks` in the field `provider`
-   1. Add a line to specify the name of your IBM registry: `registry: de.icr.io`
-   1. Add a line to specify the name of your IBM region: `region: eu-de`
+1. Modify the `jx-requirements.yml` to:
+   1. update your cluster name in the field `clusterName`
+   1. update your GitHub account in the field `environmentGitOwner`
+   1. update your Ingress Subdomain in the field `domain`
+   1. replace the field `provider` with `iks`
+   1. add a line to specify the IBM Container Registry: `registry: de.icr.io`
+   1. add a line to specify the IBM Cloud region: `region: eu-de`
 
-1. Ater the modifications, the `jx-requirements.yml` should be like this:
+1. Ater the modifications, the `jx-requirements.yml` should look like this:
     ```yaml
     cluster:
-        clusterName: my-iks-cluster
-        environmentGitOwner: my-github-account
-        environmentGitPublic: false
-        project: ""
-        provider: iks
-        zone: ""
-        registry: de.icr.io
-        region: eu-de
+      clusterName: my-iks-cluster
+      environmentGitOwner: my-github-account
+      environmentGitPublic: false
+      project: ""
+      provider: iks
+      zone: ""
+      registry: de.icr.io
+      region: eu-de
     gitops: true
     environments:
     - key: dev
     - key: staging
     - key: production
     ingress:
-    domain: my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
-    externalDNS: false
-    namespaceSubDomain: -jx.
-    tls:
+      domain: my-iks-cluster-44f776XXXXXXXXXXXXXXXXXbd46cec-0000.eu-de.containers.appdomain.cloud
+      externalDNS: false
+      namespaceSubDomain: -jx.
+      tls:
         email: ""
         enabled: false
         production: false
@@ -97,25 +97,25 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
     repository: nexus
     secretStorage: local
     storage:
-    backup:
+      backup:
         enabled: false
         url: ""
-    logs:
+      logs:
         enabled: false
         url: ""
-    reports:
+      reports:
         enabled: false
         url: ""
-    repository:
+      repository:
         enabled: false
         url: ""
     vault: {}
     velero:
-    schedule: ""
-    ttl: ""
+      schedule: ""
+      ttl: ""
     versionStream:
-    ref: v1.0.406
-    url: https://github.com/jenkins-x/jenkins-x-versions.git
+      ref: v1.0.406
+      url: https://github.com/jenkins-x/jenkins-x-versions.git
     webhook: prow
     ```
 
