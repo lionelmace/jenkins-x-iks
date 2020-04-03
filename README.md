@@ -16,6 +16,7 @@ This tutorial was tested with the following package versions:
 | [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud/download_cli.html#install_use)                         | v1.0.0 |
 | IBM Cloud plugins container-registry  | v0.1.454 |
 | IBM Cloud plugins kubernetes-service  | v1.0.15 |
+| [Helm CLI](https://github.com/helm/helm) Client only                  | v2.12.3 |
 
 > List of supported package versions for jx:
 https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
