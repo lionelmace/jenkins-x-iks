@@ -235,6 +235,46 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
     de.icr.io/<your-github-org>/jx15-qs-1         0.0.1       2d2f5214025b   <your-github-org>         29 minutes ago   67 MB    41 problèmes
     ```
 
+## How to use IBM Cloud registry with the preview environments
+
+If you want to use the Jenkins-X Preview Environments feature, you need to replicate automatically the registry secret in the temporary namespaces created to test the PullRequests. To do that you can use the [kubernetes-replicator](https://github.com/mittwald/kubernetes-replicator)
+
+1. Install kubernetes-replicator in your cluster
+```shell
+# Create roles and service accounts
+kubectl apply -f https://raw.githubusercontent.com/mittwald/kubernetes-replicator/master/deploy/rbac.yaml
+# Create actual deployment
+kubectl apply -f https://raw.githubusercontent.com/mittwald/kubernetes-replicator/master/deploy/deployment.yaml
+```
+
+1. Update the registry secret in the default namespace
+Add the following lines in the `default-de-icr-io` secret in order to allow its replication in the namespaces prefixed by `jx-`
+```yaml
+metadata:
+  annotations:
+    replicator.v1.mittwald.de/replication-allowed: "true"
+    replicator.v1.mittwald.de/replication-allowed-namespaces: "jx-*"
+```
+
+1. Create a `secret.yaml` file in the templates directory of your application to replicate the `default/default-de-icr-io` secret when Jenkins-x create a new namespace.
+```yaml
+piVersion: v1
+kind: Secret
+metadata:
+  name: regcred
+  annotations:
+    replicator.v1.mittwald.de/replicate-from: default/default-de-icr-io
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: e30K
+```
+
+1. Add the use of this secret for your application by adding the following lines in your deployments.yaml template file
+```yaml
+      imagePullSecrets:
+      - name: regcred
+```
+
 ## Long-term storage for logs + reports
 
 tbd
