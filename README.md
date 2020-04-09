@@ -271,11 +271,3 @@ data:
       imagePullSecrets:
       - name: regcred
 ```
-
-## Long-term storage for logs + reports
-
-tbd
-
-## Backing up the state of your Jenkins-x cluster
-
-tbd
