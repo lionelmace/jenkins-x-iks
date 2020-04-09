@@ -237,7 +237,7 @@ https://github.com/jenkins-x/jenkins-x-versions/tree/master/packages
 
 ## How to use IBM Cloud registry with the preview environments
 
-If you want to use the Jenkins-X Preview Environments feature, you need to replicate automatically the registry secret in the temporary namespaces created to test the PullRequests. To do that you can use the [kubernetes-replicator](https://github.com/mittwald/kubernetes-replicator)
+If you want to use the Jenkins-X Preview Environments feature, you need to replicate automatically the registry secret in the temporary namespaces created to test the PullRequests. To do that you can use the [kubernetes-replicator](https://github.com/mittwald/kubernetes-replicator).
 
 1. Install kubernetes-replicator in your cluster
 ```shell
@@ -246,8 +246,7 @@ kubectl apply -f https://raw.githubusercontent.com/mittwald/kubernetes-replicato
 # Create actual deployment
 kubectl apply -f https://raw.githubusercontent.com/mittwald/kubernetes-replicator/master/deploy/deployment.yaml
 ```
-
-1. Update the registry secret in the default namespace
+2. Update the registry secret in the default namespace
 Add the following lines in the `default-de-icr-io` secret in order to allow its replication in the namespaces prefixed by `jx-`
 ```yaml
 metadata:
@@ -255,8 +254,7 @@ metadata:
     replicator.v1.mittwald.de/replication-allowed: "true"
     replicator.v1.mittwald.de/replication-allowed-namespaces: "jx-*"
 ```
-
-1. Create a `secret.yaml` file in the templates directory of your application to replicate the `default/default-de-icr-io` secret when Jenkins-x create a new namespace.
+3. Create a `secret.yaml` file in the templates directory of your application to replicate the `default/default-de-icr-io` secret when Jenkins-x create a new namespace.
 ```yaml
 piVersion: v1
 kind: Secret
@@ -268,8 +266,7 @@ type: kubernetes.io/dockerconfigjson
 data:
   .dockerconfigjson: e30K
 ```
-
-1. Add the use of this secret for your application by adding the following lines in your deployments.yaml template file
+4. Add the use of this secret for your application by adding the following lines in your deployments.yaml template file
 ```yaml
       imagePullSecrets:
       - name: regcred
