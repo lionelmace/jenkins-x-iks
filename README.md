@@ -256,7 +256,7 @@ metadata:
 ```
 3. Create a `secret.yaml` file in the templates directory of your application to replicate the `default/default-de-icr-io` secret when Jenkins-x create a new namespace.
 ```yaml
-piVersion: v1
+apiVersion: v1
 kind: Secret
 metadata:
   name: regcred
